@@ -10,11 +10,18 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li>
+      <a href="#build-it-for-yourself">Build it for yourself</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#build-steps">Build Steps</a></li>
+      </ul>
+    </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
   </ol>
@@ -31,34 +38,14 @@ Quick and simple rust project that also solves a problem. Generate a timestamp l
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* rust
-  ```sh
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-  ```
-
 ### Installation
-
-1. Clone the repo
-   ```sh
-   git clone https://github.com/JJK-IO/discord_timestamp.git
-   ```
-2. Build and run
-   ```sh
-   cargo run -- 12:30 --date=2/29/2024 --timezone="America/Denver"
-   ```
-3. Build for release
-   ```sh
-   cargo build --release
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+1. Go to the release page: [0.1.0](https://github.com/JJK-IO/discord_timestamp/releases/tag/0.1.0)
+2. Download the version for you computer's architecture
+3. Rename it to `discort_timestamp`
+4. Place it in your `PATH`
+   - e.g. `echo 'export PATH="$PATH:/path/to/discord_timestamp"' >> ~/.zshrc`
+5. Source your `~/.zshrc` or shell equiv
+6. See the usage section below on how to use it.
 
 
 <!-- USAGE EXAMPLES -->
@@ -83,6 +70,33 @@ Options:
 > ./discord_timestamp 2:30pm --date 3/22/2024 --timezone="America/Los_Angeles" 
 <t:1711143000>
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- BUILD IT FOR YOURSELF -->
+## Build it for yourself
+### Prerequisites
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
+
+This is an example of how to list things you need to use the software and how to install them.
+* rust
+  ```sh
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  ```
+### Build Steps
+1. Clone the repo
+   ```sh
+   git clone https://github.com/JJK-IO/discord_timestamp.git
+   ```
+2. Build and run
+   ```sh
+   cargo run -- 12:30 --date=2/29/2024 --timezone="America/Denver"
+   ```
+3. Build for release
+   ```sh
+   cargo build --release
+   ```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
