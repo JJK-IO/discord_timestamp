@@ -142,5 +142,6 @@ fn main() {
         }
     };
 
-    println!("<t:{}>", datetime_with_tz.timestamp());
+    println!("<t:{}:F>", datetime_with_tz.timestamp());
+    println!("<t:{}:R>", datetime_with_tz.timestamp());
 }
