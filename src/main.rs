@@ -7,15 +7,16 @@ use iana_time_zone::{self as itz};
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Cli {
-    /// The time you want to get the timestamp for
+    /// Time as HH:MM. Takes military time 14:00 or 02:00PM
     time: String,
 
     /// Date as MM/DD/YYYY, defaults to today
     #[arg(short, long)]
     date: Option<String>,
 
-    /// Timezone as an IANA string... E.G. "America/Denver". Defaults to your local timezone if possible, otherwise ETC/UTC
-    #[arg(short, long)]
+    /// Timezone as an IANA string. E.G. "America/Denver".
+    /// Defaults to your local timezone if possible, otherwise UTC
+    #[clap(short, long, verbatim_doc_comment)]
     timezone: Option<String>,
 }
 
@@ -113,7 +114,7 @@ fn main() {
         Some(timezone_str) => timezone_str.to_string(),
         None => match itz::get_timezone() {
             Ok(tz) => tz,
-            Err(_err) => "Etc/UTC".to_string(),
+            Err(_err) => "UTC".to_string(),
         },
     };
 
@@ -142,6 +143,7 @@ fn main() {
         }
     };
 
+    println!("{}", datetime_with_tz.timestamp());
     println!("<t:{}:F>", datetime_with_tz.timestamp());
     println!("<t:{}:R>", datetime_with_tz.timestamp());
 }
