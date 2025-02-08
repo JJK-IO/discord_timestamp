@@ -1,0 +1,76 @@
+on:
+  push:
+    branches: [ci]
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-linux-gnu
+          - os: macos-latest
+            target: aarch64-apple-darwin
+          - os: windows-latest
+            target: x86_64-win-gnu
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Rust toolchain
+        uses: actions-rs/toolchain@1.7.0
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: rustfmt, clippy, cargo-edit
+
+      - name: Build and test
+        run: |
+          cargo build --release
+          # Optionally run tests if needed
+          # cargo test --release
+
+      - name: Extract version from Cargo.toml
+        id: extract-version
+        run: |
+          echo "version=$(cargo metadata --no-color | grep \"version\": | cut -d '"' -f 3)" >> $GITHUB_ENV
+
+      - name: Build binary for target
+        run: |
+          cargo build --release --target ${{ matrix.target }}
+
+      - name: Tag the binary with version
+        run: |
+          mkdir -p ./${{ matrix.os }}
+          echo "${{ env.version }}" > ./${{ matrix.os }}/version
+
+      - name: Upload binary as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./${{ matrix.os }}/*
+
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create GitHub release
+        id: create-release
+        uses: actions/gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.version }}
+          name: "Release ${{ env.version }}"
+          draft: false
+          autorelease: true
+
+      - name: Add artifacts to release
+        run: |
+          for os in ubuntu-latest macos-latest windows-latest; do
+            echo "Add $os binaries"
+            gh release upload --repo .github/workflows/build-release.yml --tag ${{ env.version }} "./${{ matrix.os }}/*"
+          done
