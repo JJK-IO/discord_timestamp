@@ -119,13 +119,10 @@ fn main() {
     };
 
     // Get the current time in the specified or default timezone
-    let tz: Tz = timezone.parse::<Tz>().map_or_else(
-        |_| {
-            eprintln!("Error parsing timezone, defaulting to UTC.");
-            Tz::UTC
-        },
-        |tz| tz,
-    );
+    let tz: Tz = timezone.parse::<Tz>().unwrap_or_else(|_| {
+        eprintln!("Error parsing timezone, defaulting to UTC.");
+        Tz::UTC
+    });
 
     // Combine the date and time components to form a DateTime<Tz> object
     let datetime_with_tz = match tz.with_ymd_and_hms(year, month, day, hours, minutes, 0) {
